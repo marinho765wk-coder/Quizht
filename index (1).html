@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Via Intramuscular — Diclofenaco</title>
+<style>
+:root{--bg:#f4f8fc;--card:#fff;--ink:#17324d;--accent:#2467a5;--ok:#218739;--bad:#c73c3c;--muted:#66788a}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(135deg,#174f83,#2f86c8);color:white;padding:28px 18px;text-align:center}
+header h1{margin:0 0 8px;font-size:clamp(28px,5vw,44px)} header p{margin:0;font-size:16px}
+.container{max-width:1050px;margin:auto;padding:20px}
+.screen{display:none}.screen.active{display:block}
+.card{background:var(--card);border-radius:18px;padding:24px;margin:18px 0;box-shadow:0 6px 22px #17324d18}
+h2{margin-top:0}.center{text-align:center}
+button{border:0;border-radius:12px;padding:13px 18px;background:var(--accent);color:white;font-weight:700;cursor:pointer;font-size:15px;margin:5px}
+button:hover{filter:brightness(1.08)} button.secondary{background:#718397}
+button.success{background:var(--ok)} button.danger{background:var(--bad)}
+.progress{height:12px;background:#dbe6ef;border-radius:99px;overflow:hidden;margin:12px 0 20px}.bar{height:100%;background:#2f86c8;width:0;transition:.3s}
+.instructions{background:#eef6ff;border-left:5px solid #2f86c8;padding:14px;border-radius:10px}
+.path{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;margin:22px 0}
+.slot{width:155px;min-height:92px;border:2px dashed #9db2c5;border-radius:14px;padding:10px;text-align:center;background:#f9fbfd}
+.slot.filled{border-style:solid;background:#edf7ff}.slot small{display:block;color:var(--muted);margin-bottom:5px}
+.arrow{font-size:26px}.pieces{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.piece{padding:14px 18px;border-radius:13px;background:white;border:2px solid #7ea6c7;cursor:grab;font-weight:700;box-shadow:0 3px 9px #00000012}
+.piece.used{opacity:.35;cursor:not-allowed}.feedback{min-height:28px;font-weight:700;margin:12px 0}.ok{color:var(--ok)}.bad{color:var(--bad)}
+.options{display:grid;gap:10px}.option{text-align:left;background:#f7fafc;color:var(--ink);border:2px solid #d4e0ea;transition:.2s}.option:hover:not(:disabled){transform:translateY(-1px);border-color:#7ea6c7}.quiz-question{position:relative;min-height:260px;border-radius:18px;overflow:hidden;padding:24px;margin-bottom:18px;background-size:cover;background-position:center;display:flex;flex-direction:column;justify-content:flex-end}.quiz-question:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.72))}.quiz-question>*{position:relative}.quiz-question h3{color:white;font-size:21px;line-height:1.35;margin:8px 0 0;text-shadow:0 2px 5px #000}.quiz-topic{display:inline-block;width:max-content;background:#ffffffdd;color:#17324d;padding:7px 11px;border-radius:99px;font-weight:700;font-size:13px}.quiz-icon{font-size:48px;text-shadow:0 2px 5px #000}.score{font-size:18px;font-weight:700;text-align:right}.stage{display:grid;grid-template-columns:90px 1fr;gap:18px;align-items:center}.icon{font-size:62px;text-align:center}
+.glossary{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.term{background:#f7fafc;border:1px solid #dbe5ed;border-radius:12px;padding:14px}.term b{display:block;margin-bottom:5px}
+.badge{display:inline-block;background:#eaf4fc;color:#175788;padding:7px 11px;border-radius:99px;font-size:13px;font-weight:700}
+@media(max-width:700px){.slot{width:135px}.arrow{display:none}.stage{grid-template-columns:1fr}.icon{font-size:48px}}
+footer{text-align:center;color:var(--muted);padding:25px}
+
+.hit-effect{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;pointer-events:none;animation:hitFade .9s ease forwards}.hit-ring{width:92px;height:92px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#218739;color:white;font-size:58px;font-weight:900;box-shadow:0 0 0 0 #21873988;animation:hitPop .7s ease}.hit-text{margin-top:12px;background:#17324d;color:white;padding:10px 18px;border-radius:999px;font-size:22px;font-weight:900}.victory-overlay{position:fixed;inset:0;background:#071b2dcc;z-index:10000;display:flex;align-items:center;justify-content:center;overflow:hidden}.victory-card{position:relative;z-index:2;background:white;color:#17324d;padding:38px 45px;border-radius:24px;text-align:center;max-width:520px;box-shadow:0 20px 60px #0008;animation:victoryPop .8s cubic-bezier(.2,1.5,.4,1)}.victory-card h2{font-size:42px;margin:5px 0 10px}.victory-card p{font-size:18px}.trophy{font-size:82px;animation:trophyBounce 1s infinite alternate}.victory-stars{font-size:30px;margin-top:15px}.confetti{position:absolute;top:-40px;animation:confettiFall 2.8s linear forwards}.confetti:nth-of-type(3n){animation-duration:2.2s}.confetti:nth-of-type(4n){animation-duration:3.2s}@keyframes hitPop{0%{transform:scale(.3);box-shadow:0 0 0 0 #21873988}60%{transform:scale(1.15);box-shadow:0 0 0 25px transparent}100%{transform:scale(1)}}@keyframes hitFade{0%,70%{opacity:1}100%{opacity:0}}@keyframes victoryPop{0%{transform:scale(.3) rotate(-5deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}@keyframes trophyBounce{to{transform:translateY(-10px) rotate(3deg)}}@keyframes confettiFall{to{transform:translateY(115vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+<header>
+<h1>💉 Via Intramuscular — Diclofenaco</h1>
+<p>Jogo virtual sobre administração intramuscular e diclofenaco</p>
+</header>
+
+<div class="container">
+<div class="score">Pontuação: <span id="score">0</span> ⭐</div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+
+<section id="home" class="screen active">
+<div class="card center">
+<h2>🎯 Desafio</h2>
+<p>Aprenda sobre a via intramuscular, o diclofenaco e os principais cuidados relacionados à administração.</p>
+<div class="instructions"><b>Como jogar:</b> clique em uma peça e depois no espaço correspondente. No computador, também é possível arrastar as peças.</div>
+<br><button onclick="startGame()">▶ Iniciar jogo</button>
+</div>
+<div class="card">
+<h2>O que você vai aprender?</h2>
+<ul>
+<li>Características da via intramuscular e do local de aplicação.</li><li>Diclofenaco: classe, mecanismo de ação e indicações.</li><li>Absorção e efeitos após a administração intramuscular.</li><li>Cuidados, contraindicações, efeitos adversos e segurança.</li>
+</ul>
+</div>
+</section>
+
+<section id="order" class="screen">
+<div class="card">
+<h2>🧩 Fase 1 — Caminho do diclofenaco IM</h2><p>Coloque as etapas do percurso após a aplicação intramuscular na ordem correta.</p>
+<div class="path" id="path"></div>
+<div class="pieces" id="pieces"></div>
+<div class="feedback" id="orderFeedback"></div>
+<div class="center"><button id="checkOrder" onclick="checkOrder()">✓ Conferir</button></div>
+</div>
+</section>
+
+<section id="adme" class="screen">
+<div class="card">
+<h2>🔬 Fase 2 — Explore o ADME</h2>
+<p>Clique nas etapas para descobrir o que acontece com o medicamento.</p>
+<div id="admeContent"></div>
+<div class="center"><button onclick="nextScreen('pharma')">Continuar →</button></div>
+</div>
+</section>
+
+<section id="pharma" class="screen"><div class="card"><h2>🎯 Fase 3 — Diclofenaco e mecanismo de ação</h2>
+<div class="stage"><div class="icon">💊</div><div><b>Classe:</b> o diclofenaco pertence aos anti-inflamatórios não esteroidais (AINEs).</div></div>
+<div class="stage"><div class="icon">🎯</div><div><b>Mecanismo:</b> inibe COX-1 e COX-2, reduzindo a síntese de prostaglandinas.</div></div>
+<div class="stage"><div class="icon">🔥</div><div><b>Efeito:</b> apresenta ações analgésica, anti-inflamatória e antipirética.</div></div>
+<div class="stage"><div class="icon">⚠️</div><div><b>Segurança:</b> AINEs podem causar efeitos gastrointestinais, renais e cardiovasculares; o uso deve respeitar a prescrição e as contraindicações.</div></div>
+<div class="center"><button onclick="nextScreen('quiz')">Ir para o quiz →</button></div></div></section>
+
+<section id="quiz" class="screen">
+<div class="card">
+<h2>🧠 Fase 4 — Quiz</h2>
+<div id="quizBox"></div>
+</div>
+</section>
+
+<section id="case" class="screen"><div class="card"><h2>🏥 Fase 5 — Situação-problema</h2>
+<p><b>Caso:</b> durante a preparação para administrar diclofenaco por via intramuscular, o profissional precisa avaliar o paciente e o local de aplicação. Qual atitude é mais adequada?</p>
+<div class="options"><button class="option" onclick="caseAnswer(this,false)">A) Aplicar sem verificar contraindicações ou condições do local.</button><button class="option" onclick="caseAnswer(this,true)">B) Conferir prescrição, contraindicações, alergias, dose, via e condições do local antes da administração.</button><button class="option" onclick="caseAnswer(this,false)">C) Aplicar o medicamento em qualquer tecido, desde que a seringa esteja estéril.</button><button class="option" onclick="caseAnswer(this,false)">D) Ignorar histórico de reações a AINEs porque a via é intramuscular.</button></div><div id="caseFeedback" class="feedback"></div></div></section>
+
+<section id="glossary" class="screen">
+<div class="card">
+<h2>📖 Fase 6 — Glossário farmacológico</h2>
+<div class="glossary">
+<div class="term"><b>Farmacocinética</b>O que o organismo faz com o fármaco.</div>
+<div class="term"><b>Farmacodinâmica</b>O que o fármaco faz no organismo.</div>
+<div class="term"><b>Absorção</b>Entrada do fármaco na circulação sistêmica.</div>
+<div class="term"><b>Distribuição</b>Repartição do fármaco entre sangue e tecidos.</div>
+<div class="term"><b>Metabolismo</b>Transformação química do fármaco, frequentemente no fígado.</div>
+<div class="term"><b>Excreção</b>Remoção do fármaco ou metabólitos do organismo.</div>
+<div class="term"><b>Biodisponibilidade</b>Fração da dose que chega à circulação sistêmica, de acordo com a definição aplicável.</div>
+<div class="term"><b>Meia-vida</b>Tempo necessário para a concentração plasmática diminuir em 50%, em condições farmacocinéticas apropriadas.</div>
+<div class="term"><b>Concentração plasmática</b>Quantidade de fármaco presente em determinado volume de plasma.</div>
+<div class="term"><b>Receptor</b>Alvo molecular capaz de reconhecer e responder a um ligante.</div>
+<div class="term"><b>Agonista</b>Substância que ativa um receptor e produz resposta.</div>
+<div class="term"><b>Antagonista</b>Substância que reduz ou impede a ação de um agonista ao se ligar ao alvo.</div>
+</div>
+<div class="center"><button onclick="finishGame()">🏆 Finalizar</button></div>
+</div>
+</section>
+
+<section id="finish" class="screen">
+<div class="card center">
+<h2>🎉 Parabéns!</h2>
+<p>Você completou o desafio sobre via intramuscular e diclofenaco e revisou seus principais conceitos.</p>
+<p style="font-size:28px"><b>⭐ <span id="finalScore">0</span> pontos</b></p>
+<p id="performance"></p>
+<button onclick="location.reload()">🔄 Jogar novamente</button>
+</div>
+</section>
+</div>
+<footer>Material didático — TDE de Farmacologia | Via Intramuscular e Diclofenaco</footer>
+
+<script>
+const stages=[
+{name:"Aplicação IM",icon:"💉",text:"O diclofenaco é administrado por injeção no tecido muscular, seguindo técnica adequada e avaliação do local de aplicação."},
+{name:"Absorção",icon:"🩸",text:"Após a aplicação no músculo, o fármaco é absorvido para a circulação. A vascularização do tecido influencia a velocidade de absorção."},
+{name:"Distribuição",icon:"🫀",text:"Depois de alcançar a circulação, o diclofenaco se distribui pelo organismo e chega aos locais onde exerce seus efeitos."},
+{name:"Ação farmacológica",icon:"🎯",text:"O diclofenaco é um anti-inflamatório não esteroidal (AINE) que inibe a atividade das enzimas ciclo-oxigenases (COX), reduzindo a formação de prostaglandinas."},
+{name:"Eliminação",icon:"🫘",text:"O diclofenaco sofre metabolismo e seus metabólitos são eliminados principalmente pela urina e pelas fezes."}
+];
+let score=0, currentQuiz=0;
+function addScore(n){score+=n;document.getElementById("score").textContent=score}
+function nextScreen(id){document.querySelectorAll(".screen").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");window.scrollTo(0,0)}
+function updateBar(n){document.getElementById("bar").style.width=n+"%"}
+function startGame(){score=0;document.getElementById("score").textContent=0;buildOrder();updateBar(10);nextScreen("order")}
+function buildOrder(){
+const path=document.getElementById("path"), pieces=document.getElementById("pieces");path.innerHTML="";pieces.innerHTML="";
+for(let i=0;i<5;i++){let s=document.createElement("div");s.className="slot";s.dataset.pos=i;s.innerHTML="<small>Etapa "+(i+1)+"</small><span>Solte aqui</span>";s.onclick=()=>selectPieceForSlot(s);path.appendChild(s);if(i<4){let a=document.createElement("div");a.className="arrow";a.textContent="→";path.appendChild(a)}}
+[...stages].sort(()=>Math.random()-.5).forEach((st,i)=>{let p=document.createElement("div");p.className="piece";p.draggable=true;p.dataset.name=st.name;p.textContent=st.icon+" "+st.name;p.onclick=()=>selectPiece(p);p.ondragstart=e=>e.dataTransfer.setData("text/plain",st.name);pieces.appendChild(p)})
+document.querySelectorAll(".slot").forEach(s=>{s.ondragover=e=>e.preventDefault();s.ondrop=e=>{let name=e.dataTransfer.getData("text/plain");putInSlot(s,name)}})
+}
+let selected=null;
+function selectPiece(p){if(p.classList.contains("used"))return;selected=p;document.querySelectorAll(".piece").forEach(x=>x.style.outline="");p.style.outline="4px solid #8fc3eb"}
+function selectPieceForSlot(s){if(selected){putInSlot(s,selected.dataset.name);selected.style.outline="";selected=null}}
+function putInSlot(s,name){
+  if(s.classList.contains("filled"))return;
+  let p=[...document.querySelectorAll(".piece")].find(x=>x.dataset.name===name);
+  if(!p||p.classList.contains("used"))return;
+  s.classList.add("filled");
+  s.dataset.name=name;
+  s.querySelector("span").textContent=name;
+  p.classList.add("used");
+  // Permite clicar na etapa já colocada para removê-la e reorganizar.
+  s.onclick=()=>removeFromSlot(s);
+}
+function removeFromSlot(s){
+  if(!s.classList.contains("filled"))return;
+  const name=s.dataset.name;
+  const p=[...document.querySelectorAll(".piece")].find(x=>x.dataset.name===name);
+  if(p){
+    p.classList.remove("used");
+    p.style.outline="";
+  }
+  s.classList.remove("filled");
+  delete s.dataset.name;
+  s.querySelector("span").textContent="Solte aqui";
+  s.onclick=()=>selectPieceForSlot(s);
+  document.getElementById("orderFeedback").textContent="";
+  document.getElementById("orderFeedback").className="feedback";
+}
+function checkOrder(){
+let slots=[...document.querySelectorAll(".slot")], correct=slots.every((s,i)=>s.dataset.name===stages[i].name), f=document.getElementById("orderFeedback");
+if(correct){addScore(20);f.className="feedback ok";f.textContent="🎉 Perfeito! O caminho ADME está correto. +20 pontos";document.getElementById("checkOrder").disabled=true;updateBar(25);setTimeout(()=>{buildADME();nextScreen("adme")},900)}
+else{
+  f.className="feedback bad";
+  f.innerHTML="❌ A sequência ainda não está correta. <b>Clique em uma etapa já colocada</b> para retirá-la e depois escolha a etapa correta.";
+}
+}
+function buildADME(){
+let box=document.getElementById("admeContent");box.innerHTML="";
+stages.forEach((s,i)=>{let d=document.createElement("div");d.className="card";d.style.cursor="pointer";d.innerHTML=`<div class="stage"><div class="icon">${s.icon}</div><div><h3>${i+1}. ${s.name}</h3><p>${s.text}</p></div></div>`;box.appendChild(d)})
+}
+const questions=[
+["Qual é a classe farmacológica do diclofenaco?",["Anti-inflamatório esteroidal (AIE)","Anti-inflamatório não esteroidal (AINE)","Analgésico opioide não esteroidal","Anti-histamínico anti-inflamatório"],1,"💊","Diclofenaco e AINEs"],
+["Na via intramuscular, o medicamento é administrado:",["No tecido subcutâneo profundo","No tecido muscular","No tecido intradérmico profundo","Diretamente na circulação venosa"],1,"💉","Aplicação intramuscular"],
+["Qual conjunto apresenta efeitos farmacológicos associados ao diclofenaco?",["Analgésico, anti-inflamatório e antipirético","Analgésico, antibiótico e antipirético","Anti-inflamatório, anticoagulante e antiviral","Antibiótico, analgésico e imunossupressor"],0,"🔥","Efeitos farmacológicos"],
+["O diclofenaco exerce seu principal mecanismo farmacológico por inibição de:",["COX-1 e COX-2","LOX-1 e LOX-2","COX-2 e fosfolipase A2","Receptores opioides e COX-1"],0,"🧬","Mecanismo de ação"],
+["A inibição das enzimas COX pelo diclofenaco reduz principalmente a síntese de:",["Prostaglandinas derivadas do ácido araquidônico","Leucotrienos derivados do ácido araquidônico","Citocinas produzidas exclusivamente no fígado","Tromboxanos sem alteração de outras prostanoides"],0,"🔬","Prostaglandinas"],
+["Qual característica do músculo pode influenciar a absorção de um fármaco administrado por via IM?",["Vascularização do tecido muscular","Quantidade de tecido adiposo exclusivamente","Pigmentação da pele sobre o músculo","Comprimento do osso adjacente"],0,"🩸","Absorção pela via IM"],
+["Antes de administrar diclofenaco por via IM, qual conjunto de verificações é mais adequado?",["Paciente, medicamento, dose, via, horário e prescrição","Paciente, fabricante, cor da embalagem e lote apenas","Dose, fabricante, local e temperatura apenas","Via, embalagem, cor da seringa e horário apenas"],0,"📋","Segurança na administração"],
+["Qual efeito adverso está relacionado ao uso de AINEs, incluindo o diclofenaco?",["Irritação gastrointestinal e possível sangramento","Redução obrigatória da glicemia","Aumento permanente da imunidade","Estimulação obrigatória da produção de hemácias"],0,"⚠️","Segurança dos AINEs"],
+["Sobre a administração intramuscular, qual afirmação é mais adequada?",["O medicamento é depositado no tecido muscular para posterior absorção","O medicamento é depositado diretamente no sangue venoso para absorção imediata","O medicamento é depositado na derme para alcançar o músculo gradualmente","O medicamento permanece no músculo e não precisa ser absorvido"],0,"💉","Via intramuscular"],
+["Por que o local escolhido para uma aplicação IM deve ser avaliado antes do procedimento?",["Para verificar condições locais que possam dificultar ou contraindicar a aplicação","Para determinar exclusivamente a velocidade de absorção do medicamento","Para definir somente o tamanho da embalagem do medicamento","Para garantir que não haverá nenhum efeito adverso sistêmico"],0,"🎯","Escolha do local"],
+["O efeito analgésico e anti-inflamatório do diclofenaco está relacionado principalmente à redução de:",["Síntese de prostaglandinas envolvidas na dor e inflamação","Síntese de hemoglobina envolvida no transporte de oxigênio","Atividade de anticorpos envolvidos na imunidade","Produção de insulina envolvida no metabolismo da glicose"],0,"🔥","Dor e inflamação"],
+["Diante de um histórico relevante de alergia ao diclofenaco ou a AINEs, qual conduta é mais apropriada?",["Prosseguir com a aplicação e observar apenas após a dose","Verificar a prescrição, o histórico e as contraindicações antes da administração","Reduzir a dose por conta própria e administrar normalmente","Trocar a via de administração sem reavaliar a prescrição"],1,"🚨","Contraindicações e alergias"],
+["Após ser absorvido a partir do músculo, o diclofenaco:",["Entra na circulação e pode ser distribuído aos tecidos","Permanece restrito ao músculo até ser completamente eliminado","Passa diretamente do músculo para o rim sem circulação sistêmica","É convertido imediatamente em metabólitos antes de alcançar a circulação"],0,"🩸","Distribuição"],
+["Farmacocinética, aplicada ao diclofenaco, descreve principalmente:",["O que o organismo faz com o fármaco, incluindo absorção e eliminação","Como o fármaco se liga ao receptor e produz seu efeito","Somente a técnica usada para aplicar a injeção","Apenas os efeitos adversos observados após a aplicação"],0,"📈","Farmacocinética"],
+["Farmacodinâmica do diclofenaco está relacionada principalmente a:",["Seu mecanismo de ação e seus efeitos no organismo","Sua passagem do local de aplicação para o sangue","Sua transformação e eliminação pelos órgãos","Somente à escolha do músculo para aplicação"],0,"🎯","Farmacodinâmica"]
+];
+
+function buildQuiz(){renderQuestion()}
+function renderQuestion(){
+let q=questions[currentQuiz], box=document.getElementById("quizBox");
+// Distribui as respostas corretas entre A, B, C e D para evitar padrões óbvios.
+const correctPositions=[1,2,0,3,1,2,3,0,1,2,3,0,1,2,3];
+const desired=correctPositions[currentQuiz];
+const order=[0,1,2,3].filter(i=>i!==q[2]); order.splice(desired,0,q[2]);
+const shuffledOptions=order.map(i=>q[1][i]);
+const correctIndex=desired;
+const backgrounds=["linear-gradient(135deg,#17324dcc,#2f86c8cc)","linear-gradient(135deg,#124d3fcc,#2d8b72cc)","linear-gradient(135deg,#7b341ecc,#d97706cc)","linear-gradient(135deg,#35206bcc,#7048a8cc)","linear-gradient(135deg,#164e63cc,#0891b2cc)","linear-gradient(135deg,#14532dcc,#16a34acc)","linear-gradient(135deg,#713f12cc,#ca8a04cc)","linear-gradient(135deg,#7f1d1dcc,#dc2626cc)","linear-gradient(135deg,#1e3a8acc,#2563ebcc)","linear-gradient(135deg,#3f3f46cc,#71717acc)","linear-gradient(135deg,#9a3412cc,#ea580ccc)","linear-gradient(135deg,#881337cc,#e11d48cc)","linear-gradient(135deg,#164e63cc,#0e7490cc)","linear-gradient(135deg,#312e81cc,#4f46e5cc)","linear-gradient(135deg,#581c87cc,#9333eacc)"];box.innerHTML=`<p><span class="badge">Pergunta ${currentQuiz+1} de ${questions.length}</span></p><div class="quiz-question" style="background-image:${backgrounds[currentQuiz]}"><div class="quiz-icon">${q[3]}</div><span class="quiz-topic">${q[4]}</span><h3>${q[0]}</h3></div><div class="options">${shuffledOptions.map((x,i)=>`<button class="option" onclick="quizAnswer(this,${i===correctIndex})">${String.fromCharCode(65+i)}) ${x}</button>`).join("")}</div><div id="quizFeedback" class="feedback"></div>`;
+}
+function showHitEffect(){
+ const fx=document.createElement("div"); fx.className="hit-effect"; fx.innerHTML='<div class="hit-ring">✓</div><div class="hit-text">ACERTOU! +10 ⭐</div>'; document.body.appendChild(fx);
+ setTimeout(()=>fx.remove(),900);
+}
+function showVictory(){
+ const overlay=document.createElement("div"); overlay.className="victory-overlay"; overlay.innerHTML='<div class="victory-card"><div class="trophy">🏆</div><h2>VITÓRIA!</h2><p>Você concluiu o desafio sobre via intramuscular e diclofenaco!</p><div class="victory-stars">⭐ ⭐ ⭐</div></div>'; document.body.appendChild(overlay);
+ for(let i=0;i<45;i++){ const c=document.createElement("span"); c.className="confetti"; c.textContent=i%3===0?"⭐":"✦"; c.style.left=Math.random()*100+"vw"; c.style.animationDelay=Math.random()*0.8+"s"; c.style.fontSize=(12+Math.random()*18)+"px"; overlay.appendChild(c); }
+ setTimeout(()=>overlay.remove(),3500);
+}
+function quizAnswer(btn,correct){
+document.querySelectorAll("#quizBox .option").forEach(x=>x.disabled=true);let f=document.getElementById("quizFeedback");
+if(correct){addScore(10);btn.classList.add("correct");f.className="feedback ok";f.textContent="✅ Correto! +10 pontos";showHitEffect()}else{btn.classList.add("wrong");f.className="feedback bad";f.textContent="❌ Incorreto. Revise o conceito e continue."}
+setTimeout(()=>{currentQuiz++;if(currentQuiz<questions.length)renderQuestion();else{updateBar(70);nextScreen("case")}},1100)
+}
+function caseAnswer(btn,correct){
+document.querySelectorAll("#case .option").forEach(x=>x.disabled=true);let f=document.getElementById("caseFeedback");
+if(correct){addScore(20);btn.classList.add("correct");f.className="feedback ok";f.textContent="🎉 Correto! +20 pontos. A menor eliminação pode aumentar a exposição ao medicamento."}
+else{btn.classList.add("wrong");f.className="feedback bad";f.textContent="❌ Revise a relação entre função renal, eliminação e concentração."}
+setTimeout(()=>{updateBar(88);nextScreen("glossary")},1200)
+}
+function finishGame(){showVictory();updateBar(100);document.getElementById("finalScore").textContent=score;document.getElementById("performance").textContent=score>=70?"Excelente! Você demonstrou domínio dos conceitos revisados.":score>=50?"Muito bem! Revise alguns pontos e tente novamente.":"Continue estudando e jogue novamente para reforçar o conteúdo.";nextScreen("finish")}
+buildQuiz();
+</script>
+</body>
+</html>
